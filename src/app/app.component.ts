@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   title = 'app';
   form1: FormGroup;
   addclicked = false;
-
+  
   ngOnInit() {
     this.form1 = new FormGroup({
       'id': new FormArray([]),
@@ -34,15 +34,11 @@ export class AppComponent implements OnInit {
   hitcancel(){
     this.addclicked = false;
   }
-  //hitadd()id, name, weight, quantity:HTMLInputElement){
-    hitadd(){
+
+  hitadd(){
     this.addclicked = false;
     const control = new FormControl(null);
-    (<FormArray>this.form1.get('id')).insert((this.form1.get('id').value+1),control);
-    // this.ids.push(new FormControl(id.value));
-    // this.names.push(new FormControl(name.value));
-    // this.weights.push(new FormControl(weight.value));
-    // this.quantities.push(new FormControl(quantity.value));
+    (<FormArray>this.form1.get('id')).push(control);
   }
 
   editRow(){    
