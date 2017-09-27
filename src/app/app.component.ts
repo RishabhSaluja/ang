@@ -17,6 +17,12 @@ export class AppComponent implements OnInit {
       'name': new FormArray([]),
       'weight': new FormArray([]),
       'quantity': new FormArray([])
+
+      // 'id': new FormArray([new FormControl('1'), new FormControl('2')]),
+      // 'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')]),
+      // 'weight': new FormArray([new FormControl('100'), new FormControl('125')]),
+      // 'quantity': new FormArray([new FormControl('60'), new FormControl('20')])
+      
     });
   }
   addRow(){
