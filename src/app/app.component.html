@@ -2,119 +2,63 @@
     <div class="row">
         <form [formGroup]="form1">
             <div class="form-group">
-                <div *ngIf="form1.get('id').value==0; then empty else notEmpty"></div>
-                <ng-template #empty>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>S.No</td>
-                                <td>NAME</td>
-                                <td>WEIGHT(in grams)</td>
-                                <td>QUANTITY</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngIf="addclicked">
-                                <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                                <!-- <td>
-                                    <div formArrayName="id">
-                                        <div *ngFor="let step of form1.get('id').controls; let i = index">
-                                            <input type="text" class="form-group" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="name">
-                                        <div *ngFor="let step of form1.get('name').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="weight">
-                                        <div *ngFor="let step of form1.get('weight').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="quantity">
-                                        <div *ngFor="let step of form1.get('quantity').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td-->
-                                <td><button class="btn btn-primary" (click)="hitadd()">Add</button>&nbsp;&nbsp;<button class="btn btn-danger"
-                                        (click)="hitcancel()">Cancel</button></td>
-                            </tr>
-                            <button [ngStyle]="{display: getvisible()}" class="btn btn-default" (click)="addRow()">ADD</button>
-                        </tbody>
-                    </table>
-                </ng-template>
-
-                <ng-template #notEmpty>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>S.No</td>
-                                <td>NAME</td>
-                                <td>WEIGHT(in grams)</td>
-                                <td>QUANTITY</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let i of form1.get('id').value; let k = index">
-                                <td>{{ form1.get('id').value[k] }}</td>
-                                <td>{{ form1.get('name').value[k] }}</td>
-                                <td>{{ form1.get('weight').value[k] }}</td>
-                                <td>{{ form1.get('quantity').value[k] }}</td>
-                                <td><button class="btn btn-primary" (click)="editRow()">Edit</button>&nbsp;&nbsp;<button class="btn btn-danger"
-                                        (click)="delRow()">Delete</button></td>
-                            </tr>
-                             <tr *ngIf="addclicked">
-                                <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                                        <td><input type="text"></td>
-                            <!--    <td>
-                                    <div formArrayName="id">
-                                        <div *ngFor="let step of form1.get('id').controls; let i = index">
-                                            <input type="text" class="form-group" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="name">
-                                        <div *ngFor="let step of form1.get('name').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="weight">
-                                        <div *ngFor="let step of form1.get('weight').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div formArrayName="quantity">
-                                        <div *ngFor="let step of form1.get('quantity').controls; let i = index">
-                                            <input type="text" class="form-control" [formControlName]="i">
-                                        </div>
-                                    </div>
-                                </td> -->
-                                <td><button class="btn btn-primary" (click)="hitadd()">Add</button>&nbsp;&nbsp;<button class="btn btn-danger"
-                                        (click)="hitcancel()">Cancel</button></td>
-                                <!-- <td><div formArrayName="quantity"></div></td> -->
-                            </tr>
-                            <button [ngStyle]="{display: getvisible()}" class="btn btn-default" (click)="addRow()">ADD</button>
-                        </tbody>
-                    </table>
-                </ng-template>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>S.No</td>
+                            <td>NAME</td>
+                            <td>WEIGHT(in grams)</td>
+                            <td>QUANTITY</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of form1.get('id').value; let k = index">
+                            <td>
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('id').value[k] }}</ng-container>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('id').value[k]" />
+                            </td>
+                            <td>
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k] }}</ng-container>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" />
+                            </td>
+                            <td>
+                                    <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
+                                    <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" />
+                            </td>
+                            <td>
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('quantity').value[k]" />
+                            </td>
+                            
+                            <td><ng-container *ngIf="tempindex === k">
+                                <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k)">Save</button>
+                                </ng-container>
+                                <ng-container *ngIf="tempindex !== k">
+                                <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k)">Edit</button>
+                                &nbsp;&nbsp;
+                                <button *ngIf="!editclicked" class="btn btn-danger" (click)="delRow(k)">Delete</button>
+                                </ng-container>
+                            </td>
+                        </tr>
+                        <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">ADD</button>
+                        <tr *ngIf="addclicked">
+                            <td></td>
+                            <td>
+                                <input type="text" #name>
+                            </td>
+                            <td>
+                                <input type="text" #weight>
+                            </td>
+                            <td>
+                                <input type="text" #quantity>
+                            </td>
+                            <td><button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value)">Add</button>&nbsp;&nbsp;
+                                <button
+                                    class="btn btn-danger" (click)="hitcancel()">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </form>
     </div>
