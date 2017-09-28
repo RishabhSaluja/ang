@@ -12,6 +12,9 @@ export class AppComponent implements OnInit {
   form1: FormGroup;
   addclicked = false;
   tempId = '';
+  tempName = '';
+  tempWeight = '';
+  tempQuantity = '';
   tempindex;
   editclicked = false;
 
@@ -21,8 +24,8 @@ export class AppComponent implements OnInit {
       'name': new FormArray([]),
       'weight': new FormArray([]),
       'quantity': new FormArray([])
-      
-      
+
+
       // 'id': new FormArray([new FormControl('1'), new FormControl('2')]),
       // 'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')]),
       // 'weight': new FormArray([new FormControl('100'), new FormControl('125')]),
@@ -45,33 +48,36 @@ export class AppComponent implements OnInit {
     this.names.push(new FormControl(name));
     this.weights.push(new FormControl(weight));
     this.quantities.push(new FormControl(quantity));
-    
+
     this.tempId = '';
     this.addclicked = false;
 
     console.log(this.form1);
   }
 
-  editRow(index: number){
+  editRow(index: number) {
+    this.tempName = this.names.value[index];
+    this.tempWeight = this.weights.value[index];
+    this.tempQuantity = this.quantities.value[index];
     this.editclicked = true;
     this.tempindex = index;
-    
+
     //this.ids.at(index).patchValue(null);
   }
 
   saveRow(index: number, name, weight, quantity){
-    
+
         this.names.at(index).setValue(name);
         this.weights.at(index).setValue(weight);
         this.quantities.at(index).setValue(quantity);
-    
+
         this.editclicked = false;
         this.tempindex = undefined;
       }
 
   delRow(index: number){
     this.addclicked = false;
-    
+
     this.ids.removeAt(index);
     this.names.removeAt(index);
     this.weights.removeAt(index);
