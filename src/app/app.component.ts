@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
     //this.ids.at(index).patchValue(null);
   }
 
-  saveRow(index, name, weight, quantity){
+  saveRow(index: number, name, weight, quantity){
     this.editclicked = false;
     this.tempindex = undefined;
     console.log(name);

@@ -17,20 +17,20 @@
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('id').value[k] }}</ng-container>
                             </td>
                             <td>
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #name1>
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k]}}</ng-container>
+                                <input type="text" id="name1" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #name>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #weight1>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #weight>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('quantity').value[k]" #quantity1>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('quantity').value[k]" #quantity>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex === k">
-                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, name1.value, weight1.value, quantity1.value)">Save</button>
+                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, name.value, weight.value, quantity.value)">Save</button>
                                 </ng-container>
 
                                 <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k)">Edit</button> &nbsp;&nbsp;
