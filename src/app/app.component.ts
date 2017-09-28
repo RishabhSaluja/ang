@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
     this.tempId = '';
     this.addclicked = false;
 
+    console.log(this.form1);
   }
 
   editRow(index: number){
@@ -59,13 +60,14 @@ export class AppComponent implements OnInit {
   }
 
   saveRow(index: number, name, weight, quantity){
-    this.editclicked = false;
-    this.tempindex = undefined;
-    console.log(name);
-    // console.log(this.names.at(index).setValue(name));
-    // this.weights.at(index).setValue(weight);
-    // this.quantities.at(index).setValue(quantity);
-  }
+    
+        this.names.at(index).setValue(name);
+        this.weights.at(index).setValue(weight);
+        this.quantities.at(index).setValue(quantity);
+    
+        this.editclicked = false;
+        this.tempindex = undefined;
+      }
 
   delRow(index: number){
     this.addclicked = false;
