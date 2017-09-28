@@ -15,29 +15,26 @@
                         <tr *ngFor="let i of form1.get('id').value; let k = index">
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('id').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('id').value[k]" />
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" />
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #name1>
                             </td>
                             <td>
-                                    <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
-                                    <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" />
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('name').value[k]" #weight1>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
-                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('quantity').value[k]" />
+                                <input type="text" *ngIf="tempindex === k" [value]="form1.get('quantity').value[k]" #quantity1>
                             </td>
-                            
-                            <td><ng-container *ngIf="tempindex === k">
-                                <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k)">Save</button>
+                            <td>
+                                <ng-container *ngIf="tempindex === k">
+                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, name1.value, weight1.value, quantity1.value)">Save</button>
                                 </ng-container>
-                                <ng-container *ngIf="tempindex !== k">
-                                <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k)">Edit</button>
-                                &nbsp;&nbsp;
+
+                                <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k)">Edit</button> &nbsp;&nbsp;
                                 <button *ngIf="!editclicked" class="btn btn-danger" (click)="delRow(k)">Delete</button>
-                                </ng-container>
                             </td>
                         </tr>
                         <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">ADD</button>
@@ -53,8 +50,7 @@
                                 <input type="text" #quantity>
                             </td>
                             <td><button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value)">Add</button>&nbsp;&nbsp;
-                                <button
-                                    class="btn btn-danger" (click)="hitcancel()">Cancel</button>
+                                <button class="btn btn-danger" (click)="hitcancel()">Cancel</button>
                             </td>
                         </tr>
                     </tbody>

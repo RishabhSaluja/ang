@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
       'weight': new FormArray([]),
       'quantity': new FormArray([])
       
+      
       // 'id': new FormArray([new FormControl('1'), new FormControl('2')]),
       // 'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')]),
       // 'weight': new FormArray([new FormControl('100'), new FormControl('125')]),
@@ -39,7 +40,7 @@ export class AppComponent implements OnInit {
   }
   hitadd(name, weight, quantity){
     this.tempId = (this.ids.value.length + 1).toString(10);
-    
+
     this.ids.push(new FormControl(this.tempId));
     this.names.push(new FormControl(name));
     this.weights.push(new FormControl(weight));
@@ -55,6 +56,15 @@ export class AppComponent implements OnInit {
     this.tempindex = index;
     
     //this.ids.at(index).patchValue(null);
+  }
+
+  saveRow(index, name, weight, quantity){
+    this.editclicked = false;
+    this.tempindex = undefined;
+    console.log(name);
+    // console.log(this.names.at(index).setValue(name));
+    // this.weights.at(index).setValue(weight);
+    // this.quantities.at(index).setValue(quantity);
   }
 
   delRow(index: number){
