@@ -18,15 +18,24 @@
                                         </td>
                                         <td>
                                             <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k]}}</ng-container>
-                                            <input type="text" *ngIf="tempindex === k" [(ngModel)]="tempName" [ngModelOptions]="{standalone: true}">
+                                            <ng-container *ngIf="tempindex === k">
+                                                    <input type="text" *ngIf="tempindex === k"  class="form-control" formArrayName="name" value="form1.get('name').value[k]" [(ngModel)]="tempName" [ngModelOptions]="{standalone: true}">
+                                            </ng-container>
+                                            
                                         </td>
                                         <td>
                                             <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
-                                            <input type="text" *ngIf="tempindex === k" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
+                                            <ng-container *ngIf="tempindex === k">
+                                                    <input type="text" *ngIf="tempindex === k" class="form-control" formArrayName="weight" value="form1.get('weight').value[k]" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
+                                            </ng-container>
+                                            
                                         </td>
                                         <td>
                                             <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
-                                            <input type="text" *ngIf="tempindex === k" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
+                                            <ng-container *ngIf="tempindex === k">
+                                                    <input type="text" *ngIf="tempindex === k" class="form-control" formArrayName="quantity" value="form1.get('quantity').value[k]" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
+                                            </ng-container>
+                                            
                                         </td>
                                         <td>
                                             <ng-container *ngIf="tempindex === k">
@@ -41,13 +50,13 @@
                             <tr *ngIf="addclicked">
                                 <td></td>
                                 <td>
-                                    <input type="text" #name>
+                                    <input type="text" class="form-control" formArrayName="name" #name>
                                 </td>
                                 <td>
-                                    <input type="text" #weight>
+                                    <input type="text" class="form-control" formArrayName="weight" #weight>
                                 </td>
                                 <td>
-                                    <input type="text" #quantity>
+                                    <input type="text" class="form-control" formArrayName="quantity" #quantity>
                                 </td>
                                 <td><button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value)">Add</button>&nbsp;&nbsp;
                                     <button class="btn btn-danger" (click)="hitcancel()">Cancel</button>
