@@ -14,6 +14,7 @@
                             <td>NAME</td>
                             <td>WEIGHT(in grams)</td>
                             <td>QUANTITY</td>
+                            <td>Price ₹(per item)</td>
                             <td></td>
                         </tr>
                     </thead>
@@ -39,19 +40,25 @@
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
                                 <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="name" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
+                                    <input type="text" class="form-control" formArrayName="weight" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
                                 </ng-container>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
                                 <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="name" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
+                                    <input type="text" class="form-control" formArrayName="quantity" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="tempindex !== k">{{ form1.get('price').value[k] }}</ng-container>
+                                <ng-container *ngIf="tempindex === k">
+                                    <input type="text" class="form-control" formArrayName="price" [(ngModel)]="tempPrice" [ngModelOptions]="{standalone: true}">
                                 </ng-container>
                             </td>
                             <td>
                                 <ng-container *ngIf="tempindex === k">
                                     <!--Button to save the edited data-->
-                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, tempName, tempWeight, tempQuantity)">Save</button>
+                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, tempName, tempWeight, tempQuantity, tempPrice)">Save</button>
                                 </ng-container>
 
                                 <!--Button to edit data-->
@@ -64,7 +71,7 @@
                         <!--First Table row ends-->
 
                         <!--Button to add new Row-->
-                        <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">ADD</button>
+                        <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">Add a Product</button>
 
                         <!--Second row begins-->
                         <!--Input Fields to add values-->
@@ -80,11 +87,13 @@
                                 <input type="number" class="form-control" formArrayName="quantity" #quantity>
                             </td>
                             <td>
+                                <input type="number" class="form-control" formArrayName="price" #price>
+                            </td>
+                            <td>
                                 <!--Button to add data to FormArray-->
-                                <button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value)">Add</button>                                &nbsp;&nbsp;
+                                <button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value, price.value)">Add</button>                                &nbsp;&nbsp;
                                 <!--Button to cancel the last event-->
                                 <button class="btn btn-danger" (click)="hitcancel()">Cancel</button>
-
                             </td>
                         </tr>
                         <!--Second row ends-->

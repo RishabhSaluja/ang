@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   tempName = '';
   tempWeight = '';
   tempQuantity = '';
+  tempPrice = '';
 
   //temp index of selected row
   tempindex;
@@ -32,10 +33,11 @@ export class AppComponent implements OnInit {
       // 'weight': new FormArray([], Validators.required),
       // 'quantity': new FormArray([], Validators.required)
 
-      'id': new FormArray([new FormControl('1'), new FormControl('2')]),
-      'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')]),
-      'weight': new FormArray([new FormControl('100'), new FormControl('125')]),
-      'quantity': new FormArray([new FormControl('60'), new FormControl('20')])
+      'id': new FormArray([new FormControl('1'), new FormControl('2')], Validators.required),
+      'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')], Validators.required),
+      'weight': new FormArray([new FormControl('100'), new FormControl('125')], Validators.required),
+      'quantity': new FormArray([new FormControl('60'), new FormControl('20')], Validators.required),
+      'price': new FormArray([new FormControl('100'), new FormControl('10')], Validators.required)
     });
   }
 
@@ -58,10 +60,10 @@ export class AppComponent implements OnInit {
   //
   //Add new value to the row / FormArray
   //  
-  hitadd(name, weight, quantity) {
+  hitadd(name, weight, quantity, price) {
 
     //Check input fields are empty or not
-    if (name !== '' && weight !== '' && quantity !== '') {
+    if (name !== '' && weight !== '' && quantity !== '' && price !== '') {
       this.tempId = (this.ids.value.length + 1).toString(10);
 
       //To add input fields values to FormArray
@@ -69,6 +71,7 @@ export class AppComponent implements OnInit {
       this.names.push(new FormControl(name));
       this.weights.push(new FormControl(weight));
       this.quantities.push(new FormControl(quantity));
+      this.prices.push(new FormControl(price));
 
       this.tempId = '';
       this.addclicked = false;
@@ -84,6 +87,8 @@ export class AppComponent implements OnInit {
     this.tempName = this.names.value[index];
     this.tempWeight = this.weights.value[index];
     this.tempQuantity = this.quantities.value[index];
+    this.tempPrice = this.prices.value[index];    
+    
     this.editclicked = true;
     this.tempindex = index;
   }
@@ -91,11 +96,12 @@ export class AppComponent implements OnInit {
   //
   //method to save the edited row elements
   //
-  saveRow(index: number, name, weight, quantity) {
+  saveRow(index: number, name, weight, quantity, price) {
 
     this.names.at(index).setValue(name);
     this.weights.at(index).setValue(weight);
     this.quantities.at(index).setValue(quantity);
+    this.prices.at(index).setValue(price);
 
     this.editclicked = false;
     this.tempindex = undefined;
@@ -111,6 +117,7 @@ export class AppComponent implements OnInit {
     this.names.removeAt(index);
     this.weights.removeAt(index);
     this.quantities.removeAt(index);
+    this.prices.removeAt(index);
 
     //
     //Track the product id whenever a product
@@ -138,5 +145,7 @@ export class AppComponent implements OnInit {
   get quantities() {
     return this.form1.get('quantity') as FormArray;
   }
-
+  get prices() {
+    return this.form1.get('price') as FormArray;
+  }
 }
