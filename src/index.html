@@ -1,13 +1,32 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Inventory</title>
   <base href="/">
+  <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyA6Wcl0V7jbBrR17nBXkc5YdzcyELifFjU",
+      authDomain: "inventory-7e4bc.firebaseapp.com",
+      databaseURL: "https://inventory-7e4bc.firebaseio.com",
+      projectId: "inventory-7e4bc",
+      storageBucket: "inventory-7e4bc.appspot.com",
+      messagingSenderId: "672042590608"
+    };
+    firebase.initializeApp(config);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
-  <app-root></app-root>
+  <div class="container">
+    <app-root></app-root>
+  </div>
 </body>
+
 </html>

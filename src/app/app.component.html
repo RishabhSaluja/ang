@@ -1,108 +1,94 @@
-<div class="container">
-    <div class="row">
-        <form [formGroup]="form1">
-            <div class="form-group">
-                <header class="page-header">
-                    <h1>Product inventory manager</h1>
-                </header>
-                <h2>All products</h2>
-                <table class="table">
-                    <!--Table Headings begins-->
-                    <thead>
-                        <tr>
-                            <td>S.No</td>
-                            <td>NAME</td>
-                            <td>WEIGHT(in grams)</td>
-                            <td>QUANTITY</td>
-                            <td>Price ₹(per item)</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <!--Table Headings ends-->
+<header class="page-header">
+    <h1>Product inventory manager</h1>
+</header>
+<h2>All products</h2>
 
-                    <!--Table Body begins-->
-                    <tbody>
-                        <!--First row begins-->
-                        <!--For loop to iterate FormGroup till the length of FormArray-->
-                        <tr *ngFor="let i of form1.get('id').value; let k = index">
-                            <td>
-                                <!--If edit button not clicked-->
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('id').value[k] }}</ng-container>
-                            </td>
-                            <td>
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('name').value[k]}}</ng-container>
-                                <!--If edit button clicked than change to input field at that index-->
-                                <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="name" [(ngModel)]="tempName" [ngModelOptions]="{standalone: true}">
-                                </ng-container>
+<table class="table">
+    <thead>
+        <!--Table Headings begins-->
+        <tr>
+            <th class="col-sm-1">ID</th>
+            <th class="col-sm-2">Name</th>
+            <th class="col-sm-2">Weight(grams)</th>
+            <th class="col-sm-1">Quantity</th>
+            <th class="col-sm-1">Price ₹(per item)</th>
+            <th class="col-sm-5"></th>
+        </tr>
+    </thead>
+    <!--Table Headings ends-->
 
-                            </td>
-                            <td>
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('weight').value[k] }}</ng-container>
-                                <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="weight" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
-                                </ng-container>
-                            </td>
-                            <td>
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('quantity').value[k] }}</ng-container>
-                                <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="quantity" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
-                                </ng-container>
-                            </td>
-                            <td>
-                                <ng-container *ngIf="tempindex !== k">{{ form1.get('price').value[k] }}</ng-container>
-                                <ng-container *ngIf="tempindex === k">
-                                    <input type="text" class="form-control" formArrayName="price" [(ngModel)]="tempPrice" [ngModelOptions]="{standalone: true}">
-                                </ng-container>
-                            </td>
-                            <td>
-                                <ng-container *ngIf="tempindex === k">
-                                    <!--Button to save the edited data-->
-                                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, tempName, tempWeight, tempQuantity, tempPrice)">Save</button>
-                                </ng-container>
+    <tbody>
+        <!--Table Body begins-->
+        <!--First row begins-->
+        <!--For loop to iterate FormGroup till the length of FormArray-->
+        <tr *ngFor="let product of server; let k = index">
+            <td>
+                <!--If edit button not clicked-->
+                <ng-container *ngIf="tempindex !== k">{{product.id}}</ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf="tempindex !== k">{{product.name}}</ng-container>
+                <!--If edit button clicked than change to input field at that index-->
+                <ng-container *ngIf="tempindex === k">
+                    <input type="text" class="form-control" [(ngModel)]="tempName" [ngModelOptions]="{standalone: true}">
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf="tempindex !== k">{{product.weight}}</ng-container>
+                <ng-container *ngIf="tempindex === k">
+                    <input type="number" class="form-control" [(ngModel)]="tempWeight" [ngModelOptions]="{standalone: true}">
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf="tempindex !== k">{{product.quantity}}</ng-container>
+                <ng-container *ngIf="tempindex === k">
+                    <input type="number" class="form-control" [(ngModel)]="tempQuantity" [ngModelOptions]="{standalone: true}">
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf="tempindex !== k">{{product.price}}</ng-container>
+                <ng-container *ngIf="tempindex === k">
+                    <input type="number" class="form-control" [(ngModel)]="tempPrice" [ngModelOptions]="{standalone: true}">
+                </ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf="tempindex === k">
+                    <!--Button to save the edited data-->
+                    <button *ngIf="editclicked" class="btn btn-primary" (click)="saveRow(k, tempName, tempWeight, tempQuantity, tempPrice)">Save</button>
+                </ng-container>
 
-                                <!--Button to edit data-->
-                                <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k)">Edit</button> &nbsp;&nbsp;
+                <!--Button to edit data-->
+                <button *ngIf="!editclicked" class="btn btn-primary" (click)="editRow(k, tempName, tempWeight, tempQuantity, tempPrice)">Edit</button> &nbsp;&nbsp;
 
-                                <!--Button to delete row-->
-                                <button *ngIf="!editclicked" class="btn btn-danger" (click)="delRow(k)">Delete</button>
-                            </td>
-                        </tr>
-                        <!--First Table row ends-->
+                <!--Button to delete row-->
+                <button *ngIf="!editclicked" class="btn btn-danger" (click)="delRow(k)">Delete</button>
+            </td>
+        </tr>
 
-                        <!--Button to add new Row-->
-                        <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">Add a Product</button>
+        <button *ngIf="!addclicked" class="btn btn-default" (click)="addRow()">Add a Product</button>
 
-                        <!--Second row begins-->
-                        <!--Input Fields to add values-->
-                        <tr *ngIf="addclicked">
-                            <td formArrayName="id"></td>
-                            <td>
-                                <input type="text" class="form-control" formArrayName="name" #name>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" formArrayName="weight" #weight>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" formArrayName="quantity" #quantity>
-                            </td>
-                            <td>
-                                <input type="number" class="form-control" formArrayName="price" #price>
-                            </td>
-                            <td>
-                                <!--Button to add data to FormArray-->
-                                <button class="btn btn-primary" (click)="hitadd(name.value, weight.value, quantity.value, price.value)">Add</button>                                &nbsp;&nbsp;
-                                <!--Button to cancel the last event-->
-                                <button class="btn btn-danger" (click)="hitcancel()">Cancel</button>
-                            </td>
-                        </tr>
-                        <!--Second row ends-->
-                    </tbody>
-                    <!--Table Body ends-->
-                </table>
-            </div>
-        </form>
-    </div>
-    <!--row class ends-->
-</div>
-<!--Div Container ends-->
+        <ng-container *ngIf="addclicked"><!--Input Fields to add values-->            
+            <tr><!--If edit button clicked than change to input field at that index-->                
+                <td #id></td>
+                <td>
+                    <input type="text" class="form-control" #name>
+                </td>
+                <td>
+                    <input type="number" class="form-control" #weight>
+                </td>
+                <td>
+                    <input type="number" class="form-control" #quantity>
+                </td>
+                <td>
+                    <input type="number" class="form-control" #price>
+                </td>
+                <td>
+                    <!--Button to add data to FormArray-->
+                    <button class="btn btn-primary" (click)="createPost(name.value, weight.value, quantity.value, price.value)">Add</button> &nbsp;&nbsp;
+                    <!--Button to cancel the last event-->
+                    <button class="btn btn-danger" (click)="hitcancel()">Cancel</button>
+                </td>
+            </tr><!--Second row ends-->
+        </ng-container>
+    </tbody><!--Table Body ends-->
+</table>

@@ -1,21 +1,21 @@
+import { Http } from '@angular/http';
+import { NgModule } from '@angular/core';
+import { PostService } from './services/post.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms'
-import { element } from 'protractor';
-
+declare var firebase: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
 
-  form1: FormGroup;
+  //Array to store Product details
+  server = [];
 
-  //State of button clicked
-  addclicked = false;
-  editclicked = false;
-
+  //Index of selected row
+  tempindex;
+  
   //temp variable to store previous values
   tempId = '';
   tempName = '';
@@ -23,22 +23,40 @@ export class AppComponent implements OnInit {
   tempQuantity = '';
   tempPrice = '';
 
-  //temp index of selected row
-  tempindex;
+  //State of button clicked
+  addclicked = false;
+  editclicked = false;
 
-  ngOnInit() {
-    this.form1 = new FormGroup({
-      // 'id': new FormArray([]),
-      // 'name': new FormArray([], Validators.required),
-      // 'weight': new FormArray([], Validators.required),
-      // 'quantity': new FormArray([], Validators.required)
+  ngOnInit(): void {
+    //To fetch data from database
+    this.getData();
+  }
 
-      'id': new FormArray([new FormControl('1'), new FormControl('2')], Validators.required),
-      'name': new FormArray([new FormControl('Beans'), new FormControl('Soup')], Validators.required),
-      'weight': new FormArray([new FormControl('100'), new FormControl('125')], Validators.required),
-      'quantity': new FormArray([new FormControl('60'), new FormControl('20')], Validators.required),
-      'price': new FormArray([new FormControl('100'), new FormControl('10')], Validators.required)
+  //
+  //Push Data to server Array
+  //
+  getData() {
+    firebase.database().ref("/").on('child_added', (snapshot) => {
+      this.server.push(snapshot.val());
     });
+  }
+
+  //
+  //Add new value to the row / FormArray
+  //
+  createPost(input_name, input_weight, input_quantity, input_price) {
+    if (input_name !== '' && input_weight !== '' && input_quantity !== '' && input_price !== '') {
+      this.tempId = (this.server.length + 1).toString(10);
+      firebase.database().ref('/').push({
+        id: this.tempId,
+        name: input_name,
+        weight: input_weight,
+        quantity: input_quantity,
+        price: input_price
+      });
+      this.tempId = '';
+      this.addclicked = false;
+    }
   }
 
   //
@@ -58,37 +76,16 @@ export class AppComponent implements OnInit {
   }
 
   //
-  //Add new value to the row / FormArray
-  //  
-  hitadd(name, weight, quantity, price) {
-
-    //Check input fields are empty or not
-    if (name !== '' && weight !== '' && quantity !== '' && price !== '') {
-      this.tempId = (this.ids.value.length + 1).toString(10);
-
-      //To add input fields values to FormArray
-      this.ids.push(new FormControl(this.tempId));
-      this.names.push(new FormControl(name));
-      this.weights.push(new FormControl(weight));
-      this.quantities.push(new FormControl(quantity));
-      this.prices.push(new FormControl(price));
-
-      this.tempId = '';
-      this.addclicked = false;
-    }
-  }
-
-  //
   //method to temporary save the row values
   // &
   //fetch the current row index to edit
   //
   editRow(index: number) {
-    this.tempName = this.names.value[index];
-    this.tempWeight = this.weights.value[index];
-    this.tempQuantity = this.quantities.value[index];
-    this.tempPrice = this.prices.value[index];    
-    
+    this.tempName = this.server[index].name;
+    this.tempWeight = this.server[index].weight;
+    this.tempQuantity = this.server[index].quantity;
+    this.tempPrice = this.server[index].price;
+
     this.editclicked = true;
     this.tempindex = index;
   }
@@ -96,12 +93,27 @@ export class AppComponent implements OnInit {
   //
   //method to save the edited row elements
   //
-  saveRow(index: number, name, weight, quantity, price) {
+  saveRow(index: number, input_name, input_weight, input_quantity, input_price) {
+    index = index + 1;
+    
+    //Find the key of currently
+    //selected row in the database
+    var ref = firebase.database().ref("/");
+    ref.orderByChild("id").equalTo(index.toString(10)).on("child_added", function (snapshot) {
+      var k = snapshot.key;
 
-    this.names.at(index).setValue(name);
-    this.weights.at(index).setValue(weight);
-    this.quantities.at(index).setValue(quantity);
-    this.prices.at(index).setValue(price);
+      var refSave = firebase.database().ref("/" + k);
+      refSave.ref.update({
+        name: input_name,
+        weight: input_weight,
+        quantity: input_quantity,
+        price: input_price
+      });
+      console.log("Updated");
+    });
+
+    this.server = [];
+    this.getData();
 
     this.editclicked = false;
     this.tempindex = undefined;
@@ -111,41 +123,40 @@ export class AppComponent implements OnInit {
   //method to delete a row from the table
   //
   delRow(index: number) {
-    this.addclicked = false;
+    index = index + 1;
 
-    this.ids.removeAt(index);
-    this.names.removeAt(index);
-    this.weights.removeAt(index);
-    this.quantities.removeAt(index);
-    this.prices.removeAt(index);
+    var ref = firebase.database().ref("/");
+    ref.orderByChild("id").equalTo(index.toString(10)).on("child_added", function (snapshot) {
+      var k = snapshot.key;
+      var refDel = firebase.database().ref("/" + k);
+      refDel.ref.ref.remove().then(function () {
+        console.log("Deleted");
+      }).catch(function (error) {
+        console.log("Error: " + error.message);
+      });
+    });
 
     //
     //Track the product id whenever a product
     //gets deleted
     //
+    var qref = firebase.database().ref("/");
     let i = 0;
-    this.ids.controls.forEach(element => {
-      i++;
-      element.setValue(i.toString(10))
+    qref.ref.once('value', function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+        var idkey = childSnapshot.key;
+        var rSave = firebase.database().ref("/" + idkey);
+        console.log(rSave);
+        i++;
+        rSave.ref.update({
+          id: i.toString(10)
+        });
+      });
     });
-  }
 
-  //
-  //get methods to return the form controls
-  //
-  get ids() {
-    return this.form1.get('id') as FormArray;
-  }
-  get names() {
-    return this.form1.get('name') as FormArray;
-  }
-  get weights() {
-    return this.form1.get('weight') as FormArray;
-  }
-  get quantities() {
-    return this.form1.get('quantity') as FormArray;
-  }
-  get prices() {
-    return this.form1.get('price') as FormArray;
+    this.server = [];
+    this.getData();
+
+    this.addclicked = false;
   }
 }
